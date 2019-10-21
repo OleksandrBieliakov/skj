@@ -1,31 +1,29 @@
-package tuto4;
+package tuto4.server;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Portmapper {
 
-    private List<Service> services = new ArrayList<>();
+    private Map<String, Service> services = new HashMap<>();
 
     private void listenSocket() {
         ServerSocket server = null;
         Socket client = null;
         try {
             server = new ServerSocket(0);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Could not listen");
             System.exit(-1);
         }
         System.out.println("Server listens on port: " + server.getLocalPort());
 
-        while(true) {
+        while (true) {
             try {
                 client = server.accept();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Accept failed");
                 System.exit(-1);
             }
