@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.Map;
 
 public class PortmapperThread extends Thread {
+
     private Socket socket;
     private Map<String, Service> services;
 
@@ -70,7 +71,6 @@ public class PortmapperThread extends Thread {
 
     private String processMessage(String message) {
         System.out.println("Received message: " + message);
-
         String[] parts = message.split(" ");
 
         switch (parts[0]) {
@@ -102,4 +102,5 @@ public class PortmapperThread extends Thread {
             // do nothing
         }
     }
+
 }

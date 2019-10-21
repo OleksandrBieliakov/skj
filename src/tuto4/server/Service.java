@@ -20,7 +20,7 @@ public class Service {
 
     @Override
     public String toString() {
-        return  address + " " + port;
+        return address + " " + port;
     }
 
 }

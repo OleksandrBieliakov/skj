@@ -9,7 +9,9 @@ import java.net.UnknownHostException;
 
 
 class Caller {
+
     static String call(Service service, String args) {
+
         Socket socket;
         PrintWriter out;
         BufferedReader in;
@@ -47,5 +49,7 @@ class Caller {
         }
 
         return answer;
+
     }
+
 }
