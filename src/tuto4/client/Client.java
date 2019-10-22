@@ -15,13 +15,16 @@ public class Client {
         Socket socket = null;
         PrintWriter out = null;
         BufferedReader in = null;
-        String address = "172.23.66.212";
-        int port = 50235;
+        String address = "192.168.0.21";
+        int port = 49888;
 
         try {
             socket = new Socket(address, port);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //out.println("register adder 192.168.0.21 49894");
+            //out.println("get adder");
+            out.println("call adder 1 2 0.6 -0.5");
         } catch (UnknownHostException e) {
             System.out.println("Unknown host");
             System.exit(-1);

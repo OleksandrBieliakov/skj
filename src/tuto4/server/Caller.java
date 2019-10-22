@@ -10,14 +10,12 @@ import java.net.UnknownHostException;
 
 class Caller {
 
-    static String call(Service service, String args) {
+    static String call(String address, int port, String args) {
 
         Socket socket;
         PrintWriter out;
         BufferedReader in;
-        String address = service.getAddress();
         String answer;
-        int port = service.getPort();
 
         try {
             socket = new Socket(address, port);

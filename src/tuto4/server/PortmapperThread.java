@@ -16,7 +16,7 @@ public class PortmapperThread extends Thread {
     }
 
     private static boolean checkIPv4(String sample) {
-        String[] parts = sample.split(".");
+        String[] parts = sample.split("\\.");
         if (parts.length != 4) return false;
         for (int i = 0, part; i < 4; ++i) {
             try {
@@ -40,14 +40,14 @@ public class PortmapperThread extends Thread {
     }
 
     private String register(String[] parts) {
-        if (parts.length != 4) return "REGISTER: incorrect command. Should be: \"register <name> <IPv4> <port>\".";
+        if (parts.length != 4) return "REGISTER: incorrect command. Should be: \"register <name> <IPv4> <port>\"";
         String name = parts[1];
         if (services.containsKey(name)) return "REGISTER: entered name is not available";
-        if (checkIPv4(parts[2])) return "REGISTER: incorrect IPv4 format";
-        if (checkPort(parts[3])) return "REGISTER: incorrect port number format";
+        if (!checkIPv4(parts[2])) return "REGISTER: incorrect IPv4 format";
+        if (!checkPort(parts[3])) return "REGISTER: incorrect port number format";
         Service service = new Service(parts[2], Integer.parseInt(parts[3]));
         services.put(name, service);
-        return "Service " + service + "successfully registered as " + name;
+        return "Service " + service + " successfully registered as \"" + name + "\"";
     }
 
     private String get(String[] parts) {
@@ -58,15 +58,18 @@ public class PortmapperThread extends Thread {
     }
 
     private String call(String[] parts) {
-        if (parts.length < 2) return "CALL: incorrect command. Should be: \"call <name> args...\"";
+        int len = parts.length;
+        if (len < 2) return "CALL: incorrect command. Should be: \"call <name> args...\"";
         String name = parts[1];
         if (!services.containsKey(name)) return "There is no service registered as: " + name;
 
         StringBuilder args = new StringBuilder();
-        for (int i = 2; i < parts.length; i++) {
+        for (int i = 2; i < len; i++) {
             args.append(parts[i]);
+            if (i != len - 1) args.append(" ");
         }
-        return Caller.call(services.get(name), args.toString());
+        Service service = services.get(name);
+        return Caller.call(service.getAddress(), service.getPort(), args.toString());
     }
 
     private String processMessage(String message) {
@@ -90,7 +93,7 @@ public class PortmapperThread extends Thread {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             String response = processMessage(in.readLine());
-            System.out.println("Response: " + response);
+            System.out.println("Response: " + response + "\n");
             out.println(response);
         } catch (IOException e1) {
             // do nothing

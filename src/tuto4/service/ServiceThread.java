@@ -1,26 +1,35 @@
-package tuto3.t2;
+package tuto4.service;
 
 import java.io.*;
 import java.net.*;
 
 
-public class T2Thread extends Thread {
+public class ServiceThread extends Thread {
     private Socket socket;
 
-    T2Thread(Socket socket) {
+    ServiceThread(Socket socket) {
         super();
         this.socket = socket;
+    }
+
+    private static String calculate(String message) {
+        String[] parts = message.split(" ");
+        double sum = 0.;
+        for (String p : parts) {
+            try {
+                sum += Double.parseDouble(p);
+            } catch (NumberFormatException e) {
+                return "Incorrect number format.";
+            }
+        }
+        return sum + "";
     }
 
     public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-            String line1 = in.readLine();
-            String line2 = in.readLine();
-            out.println("Echo: "+ line1 + " " + line2);
-            System.out.println("After sending information");
+            out.println(calculate(in.readLine()));
         } catch (IOException e1) {
             // do nothing
         }
