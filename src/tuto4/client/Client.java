@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 
 public class Client {
@@ -13,34 +14,33 @@ public class Client {
     public static void main(String[] args) {
 
         Socket socket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
-        String address = "192.168.0.21";
-        int port = 49888;
+        PrintWriter out;
+        BufferedReader in;
+        String address = "127.0.0.1";
+        int port = 8081;
+
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
 
         try {
             socket = new Socket(address, port);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //out.println("register adder 192.168.0.21 49894");
-            //out.println("get adder");
-            out.println("call adder 1 2 0.6 -0.5");
+            switch (command) {
+                case "r":
+                    out.println("register adder 127.0.0.1 8082");
+                    break;
+                case "g":
+                    out.println("get adder");
+                    break;
+                case "c":
+                    out.println("call adder 1 2 0.6 -0.5");
+                    break;
+            }
+            System.out.println(in.readLine());
         } catch (UnknownHostException e) {
             System.out.println("Unknown host");
             System.exit(-1);
-        } catch (IOException e) {
-            System.out.println("No I/O");
-            System.exit(-1);
-        }
-
-        try {
-            out.println("register service1");
-
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-
-            }
         } catch (IOException e) {
             System.out.println("Error during communication");
             System.exit(-1);

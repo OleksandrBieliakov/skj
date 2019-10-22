@@ -13,7 +13,7 @@ public class Portmapper {
         ServerSocket server = null;
         Socket client = null;
         try {
-            server = new ServerSocket(0);
+            server = new ServerSocket(8081);
         } catch (IOException e) {
             System.out.println("Could not listen");
             System.exit(-1);
