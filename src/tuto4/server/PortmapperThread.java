@@ -75,13 +75,14 @@ public class PortmapperThread extends Thread {
     private String processMessage(String message) {
         System.out.println("Received message: " + message);
         String[] parts = message.split(" ");
+        parts[0] = parts[0].toUpperCase();
 
         switch (parts[0]) {
-            case "register":
+            case "REGISTER":
                 return register(parts);
-            case "get":
+            case "GET":
                 return get(parts);
-            case "call":
+            case "CALL":
                 return call(parts);
         }
         return "Incorrect command. Try again.";
