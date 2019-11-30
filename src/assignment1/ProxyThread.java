@@ -1,6 +1,12 @@
 package assignment1;
 
-import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -8,22 +14,16 @@ import java.util.Arrays;
 
 
 public class ProxyThread extends Thread {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyThread.class);
 
     private Socket clientSocket;
-    private static int nextThreadID = 0;
-    private int threadID;
 
     ProxyThread(Socket socket) {
         this.clientSocket = socket;
     }
 
-    private synchronized void setID() {
-        threadID = nextThreadID++;
-    }
-
     private void closeClientSocket() throws IOException {
         clientSocket.close();
-        setID();
     }
 
     public void run() {
@@ -32,7 +32,7 @@ public class ProxyThread extends Thread {
             PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
 
             String request = clientIn.readLine();
-            System.out.println("(" + threadID + ")First line: " + request);
+            logger.debug("First line: {}", request);
 
             String[] request_parts;
 
@@ -48,16 +48,16 @@ public class ProxyThread extends Thread {
 
             String line;
             while ((line = clientIn.readLine()) != null && !line.isEmpty()) {
-                System.out.println("(" + threadID + ")Next line: " + line);
+                logger.debug("Next line: {}", line);
             }
             /*
             for(int i=0;i<5;i++){
-                System.out.println("(" + threadID + ")Next line: " + clientIn.readLine());
+                logger.debug("Next line: {}", clientIn.readLine());
             }
              */
 
             String[] addressAndPort = request_parts[1].split(":");
-            System.out.println("(" + threadID + ")Connecting to host: " + Arrays.toString(addressAndPort) + "\n");
+            logger.debug("Connecting to host: {}\n", Arrays.toString(addressAndPort));
 
             String address = addressAndPort[0];
 
@@ -90,7 +90,7 @@ public class ProxyThread extends Thread {
                             }
                         } while (read >= 0);
                     } catch (IOException e) {
-                        System.out.println("(" + threadID + ")Error during communication");
+                        logger.error("Error during communication", e);
                     }
                 }
             }).start();
@@ -111,9 +111,9 @@ public class ProxyThread extends Thread {
             serverSocket.close();
 
         } catch (UnknownHostException e) {
-            System.out.println("(" + threadID + ")Unknown host");
+            logger.error("Unknown host");
         } catch (IOException e) {
-            System.out.println("(" + threadID + ")Error during communication");
+            logger.error("Error during communication", e);
         }
     }
 
