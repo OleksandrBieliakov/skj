@@ -47,7 +47,7 @@ public class ProxyThread extends Thread {
             }
 
             String line;
-            while (!(line = clientIn.readLine()).isEmpty() || line != null) {
+            while ((line = clientIn.readLine()) != null && !line.isEmpty()) {
                 System.out.println("(" + threadID + ")Next line: " + line);
             }
             /*
@@ -59,8 +59,16 @@ public class ProxyThread extends Thread {
             String[] addressAndPort = request_parts[1].split(":");
             System.out.println("(" + threadID + ")Connecting to host: " + Arrays.toString(addressAndPort) + "\n");
 
-            InetAddress address = InetAddress.getByName(addressAndPort[0]);
-            Socket serverSocket = new Socket(address, Integer.parseInt(addressAndPort[1]));
+            String address = addressAndPort[0];
+
+            if(!address.startsWith("http")){
+                String temp = "http://";
+                address = temp + address;
+            }
+
+            InetAddress inetAddress = InetAddress.getByName(address);
+
+            Socket serverSocket = new Socket(inetAddress, Integer.parseInt(addressAndPort[1]));
 
             clientOut.println("HTTP/1.1 200 OK");
 
