@@ -1,4 +1,4 @@
-package tuto3.example.server;
+package tcp.example.server;
 
 import java.io.*;
 import java.net.*;

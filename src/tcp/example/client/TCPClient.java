@@ -1,4 +1,4 @@
-package tuto3.example.client;
+package tcp.example.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;

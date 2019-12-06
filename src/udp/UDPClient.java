@@ -1,4 +1,4 @@
-package tuto5.example;
+package udp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

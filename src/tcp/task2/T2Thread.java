@@ -1,4 +1,4 @@
-package tuto3.t2;
+package tcp.task2;
 
 import java.io.*;
 import java.net.*;

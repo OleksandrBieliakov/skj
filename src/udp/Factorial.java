@@ -1,4 +1,4 @@
-package tuto5.example;
+package udp;
 
 public class Factorial {
 

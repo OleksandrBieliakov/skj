@@ -1,4 +1,4 @@
-package tuto5.example;
+package udp;
 
 public class UDP {
     static private int MIN_MTU = 576;

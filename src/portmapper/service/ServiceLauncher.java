@@ -1,38 +1,37 @@
-package tuto3.example.server;
+package portmapper.service;
 
 import java.io.*;
 import java.net.*;
 
+public class ServiceLauncher {
 
-public class TCPServer {
-    public void listenSocket() {
+    private void listenSocket() {
         ServerSocket server = null;
         Socket client = null;
         try {
-            server = new ServerSocket(0);
-        }
-        catch (IOException e) {
+            server = new ServerSocket(8082);
+        } catch (IOException e) {
             System.out.println("Could not listen");
             System.exit(-1);
         }
         System.out.println("Server listens on port: " + server.getLocalPort());
 
-        while(true) {
+        while (true) {
             try {
                 client = server.accept();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Accept failed");
                 System.exit(-1);
             }
 
-            (new ServerThread(client)).start();
+            (new ServiceThread(client)).start();
         }
 
     }
 
     public static void main(String[] args) {
-        TCPServer server = new TCPServer();
+        ServiceLauncher server = new ServiceLauncher();
         server.listenSocket();
     }
+
 }

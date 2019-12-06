@@ -1,4 +1,4 @@
-package tuto3.t1;
+package tcp.task1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
